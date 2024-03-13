@@ -1,0 +1,12 @@
+Endpoint URL: https://retoolapi.dev/XAqDln/user
+
+HTTP method endpoints
+
+GET /XAqDln/user - lekérdezés
+GET filter /XAqDln/user?username=value
+GET by id /XAqDln/user/1
+GET paginate /XAqDln/user?_page=2&_limit=10
+POST /XAqDln/user - új rekord rögzítésére
+PUT /XAqDln/user/1 - teljes rekord frissítése
+PATCH /XAqDln/user/1 - rekord valamely adatának a frissítése
+DELETE /XAqDln/user/1 - rekord törlése
