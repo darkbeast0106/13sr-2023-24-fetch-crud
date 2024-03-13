@@ -3,8 +3,6 @@ const endUrl = "https://retoolapi.dev/XAqDln/user";
 document.addEventListener("DOMContentLoaded", () => {
     const createButton = document.querySelector("#create");
     const readButton = document.querySelector("#read");
-    const updateButton = document.querySelector("#update");
-    const deleteButton = document.querySelector("#delete");
     const userForm = document.querySelector("#userForm");
     const userList = document.querySelector("#userList");
     const usernameInput = document.querySelector("#username");
@@ -61,6 +59,20 @@ document.addEventListener("DOMContentLoaded", () => {
         salaryInput.value = "";
     }
 
+    async function deleteUser(id) {
+        const userConfirm = confirm(`Biztos szeretné törölni a ${id} sorszámú elemet?`)
+        if (!userConfirm) {
+            return;
+        }
+        const response = await fetch(endUrl + "/" + id, {
+            method: "DELETE"
+        });
+        readAllUsers();
+        if (!response.ok) {
+            alert("Sikertelen törlés");
+        }
+    }
+
     function readAllUsers() {
         fetch(endUrl)
             .then((response) => response.json())
@@ -68,7 +80,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function adatokTablazatba(data) {
-        let tablaHtml = '<table class="table table-striped"><thead><tr><th>id</th><th>username</th><th>location</th><th>salary</th></tr></thead><tbody>';
+        let tablaHtml = `
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>username</th>
+                    <th>location</th>
+                    <th>salary</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>`;
 
 
         for (let index = 0; index < data.length; index++) {
@@ -78,12 +101,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${element.username}</td>
                 <td>${element.location}</td>
                 <td>${element.salary}</td>
+                <td>
+                    <button type="button" class="btn btn-outline-danger" onclick="deleteUser(${element.id})">Törlés</button>
+                </td>
             </tr>`;
             tablaHtml += tableRow;
         }
 
         tablaHtml += '</tbody></table>';
         userList.innerHTML=tablaHtml;
+
+        window.deleteUser = deleteUser;
     }
 
 
