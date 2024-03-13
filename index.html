@@ -19,6 +19,7 @@
             <button type="button" id="update" class="btn btn-outline-primary col-2 m-2">Update</button>
             <button type="button" id="delete" class="btn btn-outline-primary col-2 m-2">Delete</button>
         </div>
+
         <form id="userForm" method="post" class="d-none">
             <div class="mb-3">
                 <label for="username" class="form-label">Név</label>
@@ -32,8 +33,11 @@
                 <label for="salary" class="form-label">Fizetés</label>
                 <input type="number" class="form-control" id="salary">
             </div>
-            <button type="submit" class="btn btn-outline-primary">Felvétel</button>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-outline-primary">Felvétel</button>
+            </div>
         </form>
+
         <div id="userList">
             <h2 class="text-center">Adatok betöltése...</h2>
         </div>
