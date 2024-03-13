@@ -4,19 +4,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const createButton = document.querySelector("#create");
     const readButton = document.querySelector("#read");
     const userForm = document.querySelector("#userForm");
+    const userFormSubmitButton = document.querySelector("#userFormSubmitButton");
     const userList = document.querySelector("#userList");
+    const idInput = document.querySelector("#id");
     const usernameInput = document.querySelector("#username");
     const locationInput = document.querySelector("#location");
     const salaryInput = document.querySelector("#salary");
 
     createButton.addEventListener('click',() => {
-        userList.classList.add("d-none");
-        userForm.classList.remove("d-none");
+        clearUserForm();
+        displayCreateButton();
+        displayUserForm();
     })
     
     readButton.addEventListener('click',() => {
         displayUserList();
     })
+
+    function displayUserForm() {
+        userList.classList.add("d-none");
+        userForm.classList.remove("d-none");
+    }
 
     function displayUserList() {
         readAllUsers();
@@ -26,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     userForm.addEventListener('submit', event => {
         event.preventDefault();
+        const id = parseInt(idInput.value);
         const username = usernameInput.value;
         const location = locationInput.value;
         const salary = parseInt(salaryInput.value);
@@ -34,8 +43,27 @@ document.addEventListener("DOMContentLoaded", () => {
             location: location,
             salary: salary
         };
-        createUser(user);
+        if (id == 0) {
+            createUser(user);
+        } else {
+            updateUser(id, user);
+        }
     });
+
+    async function updateUser(id, user) {
+        const response = await fetch(endUrl + "/" + id, {
+            method: "PATCH",
+            body: JSON.stringify(user),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            alert("Hiba történt")
+            return;
+        }
+        displayUserList();
+    }
 
     async function createUser(user) {
         const response = await fetch(endUrl, {
@@ -47,13 +75,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
         if (response.ok) {
             displayUserList();
-            clearUserForm();
         } else {
             alert("hiba történt")
         }
     }
 
     function clearUserForm() {
+        idInput.value = 0;
         usernameInput.value = "";
         locationInput.value = "";
         salaryInput.value = "";
@@ -102,6 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 <td>${element.location}</td>
                 <td>${element.salary}</td>
                 <td>
+                    <button type="button" class="btn btn-outline-success" onclick="loadUserUpdateForm(${element.id})">Módosítás</button>
+                    
                     <button type="button" class="btn btn-outline-danger" onclick="deleteUser(${element.id})">Törlés</button>
                 </td>
             </tr>`;
@@ -110,11 +140,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         tablaHtml += '</tbody></table>';
         userList.innerHTML=tablaHtml;
-
-        window.deleteUser = deleteUser;
     }
 
+    async function loadUserUpdateForm(id) {
+        const response = await fetch(endUrl + "/" + id);
+        if (!response.ok) {
+            readAllUsers();
+            alert("Hiba történt a módosítási űrlap megnyitása során");
+            return;
+        } 
+        const user = await response.json();
+        console.log(user);
+        idInput.value = user.id;
+        usernameInput.value = user.username;
+        locationInput.value = user.location;
+        salaryInput.value = user.salary;
 
+        displayUpdateButton();
+        displayUserForm();
+    }
+
+    function displayUpdateButton() {
+        userFormSubmitButton.textContent = "Módosítás";
+        userFormSubmitButton.classList.remove("btn-outline-primary");
+        userFormSubmitButton.classList.add("btn-outline-success");
+    }
+
+    function displayCreateButton() {
+        userFormSubmitButton.textContent = "Felvétel";
+        userFormSubmitButton.classList.remove("btn-outline-success");
+        userFormSubmitButton.classList.add("btn-outline-primary");
+    }
     
+    window.deleteUser = deleteUser;
+    window.loadUserUpdateForm = loadUserUpdateForm;
     readAllUsers();
 });
