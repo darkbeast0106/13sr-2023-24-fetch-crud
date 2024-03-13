@@ -13,12 +13,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     readAllUsers();
     function adatokTablazatba(data) {
-        var tablaHtml = '<table class="table table-striped"><thead><tr><th>id</th><th>username</th><th>location</th><th>salary</th></tr></thead><tbody>';
+        let tablaHtml = '<table class="table table-striped"><thead><tr><th>id</th><th>username</th><th>location</th><th>salary</th></tr></thead><tbody>';
 
 
         for (let index = 0; index < data.length; index++) {
             const element = data[index];
-            let tableRow = `<tr><td>${element.id}</td><td>${element.username}</td><td>${element.location}</td><td>${element.salary}</td></tr>`;
+            let tableRow = `<tr>
+                <td>${element.id}</td>
+                <td>${element.username}</td>
+                <td>${element.location}</td>
+                <td>${element.salary}</td>
+            </tr>`;
             tablaHtml += tableRow;
         }
 
