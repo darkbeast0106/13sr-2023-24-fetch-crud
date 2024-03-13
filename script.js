@@ -5,19 +5,61 @@ document.addEventListener("DOMContentLoaded", () => {
     const readButton = document.querySelector("#read");
     const updateButton = document.querySelector("#update");
     const deleteButton = document.querySelector("#delete");
-    const userForm = document.querySelector("#userForm")
-    const userList = document.querySelector("#userList")
+    const userForm = document.querySelector("#userForm");
+    const userList = document.querySelector("#userList");
+    const usernameInput = document.querySelector("#username");
+    const locationInput = document.querySelector("#location");
+    const salaryInput = document.querySelector("#salary");
 
     createButton.addEventListener('click',() => {
-        userForm.classList.remove("d-none");
         userList.classList.add("d-none");
+        userForm.classList.remove("d-none");
     })
     
     readButton.addEventListener('click',() => {
+        displayUserList();
+    })
+
+    function displayUserList() {
+        readAllUsers();
         userForm.classList.add("d-none");
         userList.classList.remove("d-none");
-        readAllUsers();
-    })
+    }
+
+    userForm.addEventListener('submit', event => {
+        event.preventDefault();
+        const username = usernameInput.value;
+        const location = locationInput.value;
+        const salary = parseInt(salaryInput.value);
+        const user = {
+            username: username,
+            location: location,
+            salary: salary
+        };
+        createUser(user);
+    });
+
+    async function createUser(user) {
+        const response = await fetch(endUrl, {
+            method: "POST",
+            body: JSON.stringify(user),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (response.ok) {
+            displayUserList();
+            clearUserForm();
+        } else {
+            alert("hiba történt")
+        }
+    }
+
+    function clearUserForm() {
+        usernameInput.value = "";
+        locationInput.value = "";
+        salaryInput.value = "";
+    }
 
     function readAllUsers() {
         fetch(endUrl)
