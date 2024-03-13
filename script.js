@@ -5,13 +5,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const readButton = document.querySelector("#read");
     const updateButton = document.querySelector("#update");
     const deleteButton = document.querySelector("#delete");
+    const userForm = document.querySelector("#userForm")
+    const userList = document.querySelector("#userList")
+
+    createButton.addEventListener('click',() => {
+        userForm.classList.remove("d-none");
+        userList.classList.add("d-none");
+    })
+    
+    readButton.addEventListener('click',() => {
+        userForm.classList.add("d-none");
+        userList.classList.remove("d-none");
+        readAllUsers();
+    })
 
     function readAllUsers() {
         fetch(endUrl)
             .then((response) => response.json())
             .then((data) => adatokTablazatba(data))
     }
-    readAllUsers();
+
     function adatokTablazatba(data) {
         let tablaHtml = '<table class="table table-striped"><thead><tr><th>id</th><th>username</th><th>location</th><th>salary</th></tr></thead><tbody>';
 
@@ -28,6 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         tablaHtml += '</tbody></table>';
-        document.getElementById('felhasznalokLista').innerHTML=tablaHtml;
+        userList.innerHTML=tablaHtml;
     }
+
+
+    
+    readAllUsers();
 });

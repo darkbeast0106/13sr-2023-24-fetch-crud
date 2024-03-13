@@ -13,31 +13,28 @@
 
 <body>
     <main class="container">
-        <div id="kivalasztottElem"></div>
         <div id="muveletek" class="row">
             <button type="button" id="create" class="btn btn-outline-primary col-2 m-2">Create</button>
             <button type="button" id="read" class="btn btn-outline-primary col-2 m-2">Read</button>
             <button type="button" id="update" class="btn btn-outline-primary col-2 m-2">Update</button>
             <button type="button" id="delete" class="btn btn-outline-primary col-2 m-2">Delete</button>
         </div>
-        <div>
-            <form id="userForm" method="post">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Név</label>
-                    <input type="text" class="form-control" id="username">
-                </div>
-                <div class="mb-3">
-                    <label for="location" class="form-label">Cím</label>
-                    <input type="text" class="form-control" id="location">
-                </div>
-                <div class="mb-3">
-                    <label for="salary" class="form-label">Fizetés</label>
-                    <input type="number" class="form-control" id="salary">
-                </div>
-                <button type="submit" class="btn btn-outline-primary">Felvétel</button>
-            </form>
-        </div>
-        <div id="felhasznalokLista">
+        <form id="userForm" method="post" class="d-none">
+            <div class="mb-3">
+                <label for="username" class="form-label">Név</label>
+                <input type="text" class="form-control" id="username">
+            </div>
+            <div class="mb-3">
+                <label for="location" class="form-label">Cím</label>
+                <input type="text" class="form-control" id="location">
+            </div>
+            <div class="mb-3">
+                <label for="salary" class="form-label">Fizetés</label>
+                <input type="number" class="form-control" id="salary">
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Felvétel</button>
+        </form>
+        <div id="userList">
             <h2 class="text-center">Adatok betöltése...</h2>
         </div>
     </main>
